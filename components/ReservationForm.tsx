@@ -3,10 +3,22 @@ import { motion } from 'framer-motion'
 import { Calendar, Clock, User, Phone, Mail, MessageSquare } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { supabase, Service } from '../lib/supabaseClient'
 import { validatePhone, getTimeSlots, addDays } from '../lib/utils'
 import { BarberLoader } from './LoaderBarber'
 import config from '../config.json'
+
+// Service type definition
+interface Service {
+  id: string
+  title: string
+  description: string
+  price: string
+  duration: string
+  icon: string
+  is_active?: boolean
+  created_at?: string
+  updated_at?: string
+}
 
 interface ReservationFormData {
   name: string
@@ -63,18 +75,28 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
       // Get all time slots
       const allSlots = getTimeSlots(9, 22)
       
-      // Get existing reservations for this date
-      const { data: reservations } = await supabase
-        .from('reservations')
-        .select('appointment_time')
-        .eq('appointment_date', date)
-        .neq('status', 'cancelled')
-
-      // Filter out booked slots
-      const bookedSlots = reservations?.map(r => r.appointment_time) || []
-      const available = allSlots.filter(slot => !bookedSlots.includes(slot))
+      // Get existing reservations for this date from API
+      const response = await fetch('/api/reservations')
       
-      setAvailableSlots(available)
+      if (response.ok) {
+        const result = await response.json()
+        const reservations = result.data || []
+        
+        // Filter reservations for the selected date
+        const dayReservations = reservations.filter((r: any) => {
+          const reservationDate = new Date(r.appointment_date).toISOString().split('T')[0]
+          return reservationDate === date && r.status !== 'cancelled'
+        })
+        
+        // Filter out booked slots
+        const bookedSlots = dayReservations.map((r: any) => r.appointment_time)
+        const available = allSlots.filter(slot => !bookedSlots.includes(slot))
+        
+        setAvailableSlots(available)
+      } else {
+        // Fallback: show all slots
+        setAvailableSlots(allSlots)
+      }
     } catch (error) {
       console.error('Error loading available slots:', error)
       setAvailableSlots(getTimeSlots(9, 22))
@@ -91,38 +113,30 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
         return
       }
 
-      // Check if the time slot is still available
-      const { data: existing } = await supabase
-        .from('reservations')
-        .select('id')
-        .eq('appointment_date', data.appointment_date)
-        .eq('appointment_time', data.appointment_time)
-        .neq('status', 'cancelled')
-        .single()
-
-      if (existing) {
-        toast.error('هذا الموعد محجوز بالفعل، يرجى اختيار موعد آخر')
-        return
-      }
-
-      // Submit reservation
-      const { error } = await supabase
-        .from('reservations')
-        .insert([{
+      // Submit reservation to API
+      const response = await fetch('/api/reservations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           name: data.name.trim(),
           phone: data.phone.trim(),
           email: data.email?.trim() || null,
           service_id: data.service_id,
           appointment_date: data.appointment_date,
           appointment_time: data.appointment_time,
-          notes: data.notes?.trim() || null,
-          status: 'pending'
-        }])
+          notes: data.notes?.trim() || null
+        })
+      })
 
-      if (error) {
-        console.error('Error creating reservation:', error)
-        toast.error('خطأ في حجز الموعد')
-        return
+      if (!response.ok) {
+        const error = await response.json()
+        if (response.status === 409) {
+          toast.error('هذا الموعد محجوز بالفعل، يرجى اختيار موعد آخر')
+          return
+        }
+        throw new Error(error.error || 'Failed to create reservation')
       }
 
       toast.success('تم حجز الموعد بنجاح! سنتواصل معك قريباً للتأكيد')

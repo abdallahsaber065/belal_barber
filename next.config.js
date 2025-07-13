@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+require('dotenv').config()
+
 const nextConfig = {
   trailingSlash: true,
   images: {
@@ -6,7 +8,10 @@ const nextConfig = {
   },
   eslint: {
     ignoreDuringBuilds: true,
+  },
+  env: {
+    DATABASE_URL: process.env.DATABASE_URL
   }
 }
 
-module.exports = nextConfig 
+module.exports = nextConfig

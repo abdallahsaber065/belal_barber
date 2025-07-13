@@ -5,9 +5,9 @@ import { motion } from 'framer-motion'
 import { Phone, Star, CheckCircle, ArrowLeft, Sparkles, Users, Award, Clock } from 'lucide-react'
 import { ServiceGrid, FeaturedServiceCard } from '../components/ServiceCard'
 import { BarberLoader } from '../components/LoaderBarber'
-import { supabase } from '../lib/supabaseClient'
 import config from '../config.json'
 
+// Service type definition
 interface Service {
   id: string
   title: string
@@ -15,6 +15,9 @@ interface Service {
   price: string
   duration: string
   icon: string
+  is_active: boolean
+  created_at: string
+  updated_at: string
 }
 
 export default function Home() {
@@ -28,29 +31,35 @@ export default function Home() {
 
   const loadServices = async () => {
     try {
-      // Try to fetch from Supabase first
-      const { data: supabaseServices, error } = await supabase
-        .from('services')
-        .select('*')
-        .eq('is_active', true)
-        .limit(6)
-
-      if (error) {
-        console.log('Using config services as fallback')
-        // Fallback to config services
-        const configServices = config.services.items.map(service => ({
-          id: service.id,
-          title: service.title,
-          description: service.description,
-          price: service.price,
-          duration: service.duration,
-          icon: service.icon
-        }))
-        setServices(configServices.slice(0, 6))
-        setFeaturedService(configServices[0])
+      // Fetch from API route
+      const response = await fetch('/api/services')
+      
+      if (response.ok) {
+        const result = await response.json()
+        const servicesData = result.data || []
+        
+        if (servicesData.length > 0) {
+          setServices(servicesData.slice(0, 6))
+          setFeaturedService(servicesData[0])
+        } else {
+          console.log('Using config services as fallback')
+          // Fallback to config services
+          const configServices = config.services.items.map(service => ({
+            id: service.id,
+            title: service.title,
+            description: service.description,
+            price: service.price,
+            duration: service.duration,
+            icon: service.icon,
+            is_active: true,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          }))
+          setServices(configServices.slice(0, 6))
+          setFeaturedService(configServices[0])
+        }
       } else {
-        setServices(supabaseServices || [])
-        setFeaturedService(supabaseServices?.[0] || null)
+        throw new Error('Failed to fetch services')
       }
     } catch (error) {
       console.error('Error loading services:', error)
@@ -61,7 +70,10 @@ export default function Home() {
         description: service.description,
         price: service.price,
         duration: service.duration,
-        icon: service.icon
+        icon: service.icon,
+        is_active: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
       }))
       setServices(configServices.slice(0, 6))
       setFeaturedService(configServices[0])
@@ -168,7 +180,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="responsive-grid pb-6 sm:pb-0"
+              className="responsive-grid"
             >
               {config.hero.features.map((feature, index) => (
                 <div
@@ -187,7 +199,7 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      {/* <section className="py-16 bg-white">
+      <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="responsive-grid stats">
             {stats.map((stat, index) => (
@@ -211,7 +223,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section> */}
+      </section>
 
 
       {/* All Services */}
@@ -237,7 +249,7 @@ export default function Home() {
             </div>
           ) : (
             <div className="responsive-grid">
-              <ServiceGrid services={services} />
+              <ServiceGrid services={services || []} />
             </div>
           )}
         </div>

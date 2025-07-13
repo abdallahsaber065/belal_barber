@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  price       String
+  duration    String
+  icon        String
+  is_active   Boolean  @default(true)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  // Relations
+  reservations Reservation[]
+
+  @@map("services")
+}
+
+model Contact {
+  id         String   @id @default(cuid())
+  name       String
+  email      String?
+  phone      String
+  message    String
+  created_at DateTime @default(now())
+
+  @@map("contacts")
+}
+
+model Reservation {
+  id               String   @id @default(cuid())
+  name             String
+  phone            String
+  email            String?
+  service_id       String
+  appointment_date DateTime @db.Date
+  appointment_time String   // Store as string for simplicity
+  notes            String?
+  status           ReservationStatus @default(pending)
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  // Relations
+  service Service @relation(fields: [service_id], references: [id], onDelete: Cascade)
+
+  @@map("reservations")
+}
+
+model User {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  password   String
+  role       UserRole @default(user)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("users")
+}
+
+enum ReservationStatus {
+  pending
+  confirmed
+  cancelled
+}
+
+enum UserRole {
+  admin
+  user
+} 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
+import { useSession, signIn, signOut } from 'next-auth/react'
 import { motion } from 'framer-motion'
 import { 
   Users, 
@@ -20,8 +21,46 @@ import {
   BarChart3
 } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { supabase, Service, Contact, Reservation } from '../lib/supabaseClient'
 import { formatDate, formatTime } from '../lib/utils'
+
+// Type definitions
+interface Service {
+  id: string
+  title: string
+  description: string
+  price: string
+  duration: string
+  icon: string
+  is_active: boolean
+  created_at: string
+  updated_at: string
+}
+
+interface Contact {
+  id: string
+  name: string
+  email: string | null
+  phone: string
+  message: string
+  created_at: string
+}
+
+interface Reservation {
+  id: string
+  name: string
+  phone: string
+  email?: string | null
+  service_id: string
+  appointment_date: string
+  appointment_time: string
+  notes?: string | null
+  status: 'pending' | 'confirmed' | 'cancelled'
+  created_at: string
+  updated_at: string
+  service?: {
+    title: string
+  }
+}
 import { BarberLoader } from '../components/LoaderBarber'
 import config from '../config.json'
 
@@ -35,8 +74,7 @@ interface AdminStats {
 type ActiveTab = 'dashboard' | 'services' | 'contacts' | 'reservations' | 'settings'
 
 export default function AdminPanel() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
+  const { data: session, status } = useSession()
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard')
   const [stats, setStats] = useState<AdminStats>({
     totalServices: 0,
@@ -56,75 +94,41 @@ export default function AdminPanel() {
   const [formData, setFormData] = useState<any>({})
 
   useEffect(() => {
-    checkAuth()
-  }, [])
-
-  const checkAuth = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        setIsAuthenticated(true)
-        loadDashboardData()
-      }
-    } catch (error) {
-      console.error('Auth check failed:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const handleLogin = async (email: string, password: string) => {
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      })
-      
-      if (error) {
-        toast.error('خطأ في تسجيل الدخول')
-        return
-      }
-      
-      setIsAuthenticated(true)
+    if (session) {
       loadDashboardData()
-      toast.success('تم تسجيل الدخول بنجاح')
-    } catch (error) {
-      console.error('Login error:', error)
-      toast.error('خطأ في تسجيل الدخول')
     }
-  }
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    setIsAuthenticated(false)
-    toast.success('تم تسجيل الخروج')
-  }
+  }, [session, activeTab])
 
   const loadDashboardData = async () => {
     try {
-      // Load stats
+      // Load stats - we'll need to fetch from different endpoints
       const [servicesRes, contactsRes, reservationsRes] = await Promise.all([
-        supabase.from('services').select('id'),
-        supabase.from('contacts').select('id'),
-        supabase.from('reservations').select('id, appointment_date')
+        fetch('/api/services'),
+        fetch('/api/contacts'),
+        fetch('/api/reservations')
       ])
 
+      const services = servicesRes.ok ? (await servicesRes.json()).data : []
+      const contacts = contactsRes.ok ? (await contactsRes.json()).data : []
+      const reservations = reservationsRes.ok ? (await reservationsRes.json()).data : []
+
+      // Calculate stats
       const today = new Date().toISOString().split('T')[0]
-      const todayReservations = reservationsRes.data?.filter(
-        r => r.appointment_date === today
-      ).length || 0
+      const todayReservations = reservations.filter((r: any) => 
+        r.appointment_date.startsWith(today)
+      ).length
 
       setStats({
-        totalServices: servicesRes.data?.length || 0,
-        totalContacts: contactsRes.data?.length || 0,
-        totalReservations: reservationsRes.data?.length || 0,
+        totalServices: services.length,
+        totalContacts: contacts.length,
+        totalReservations: reservations.length,
         todayReservations
       })
 
       // Load data based on active tab
-      if (activeTab === 'services') loadServices()
-      if (activeTab === 'contacts') loadContacts()
-      if (activeTab === 'reservations') loadReservations()
+      if (activeTab === 'services') await loadServices()
+      if (activeTab === 'contacts') await loadContacts()
+      if (activeTab === 'reservations') await loadReservations()
     } catch (error) {
       console.error('Error loading dashboard data:', error)
     }
@@ -132,13 +136,13 @@ export default function AdminPanel() {
 
   const loadServices = async () => {
     try {
-      const { data, error } = await supabase
-        .from('services')
-        .select('*')
-        .order('created_at', { ascending: false })
-      
-      if (error) throw error
-      setServices(data || [])
+      const response = await fetch('/api/services')
+      if (response.ok) {
+        const result = await response.json()
+        setServices(result.data || [])
+      } else {
+        throw new Error('Failed to fetch services')
+      }
     } catch (error) {
       console.error('Error loading services:', error)
       toast.error('خطأ في تحميل الخدمات')
@@ -147,13 +151,13 @@ export default function AdminPanel() {
 
   const loadContacts = async () => {
     try {
-      const { data, error } = await supabase
-        .from('contacts')
-        .select('*')
-        .order('created_at', { ascending: false })
-      
-      if (error) throw error
-      setContacts(data || [])
+      const response = await fetch('/api/contacts')
+      if (response.ok) {
+        const result = await response.json()
+        setContacts(result.data || [])
+      } else {
+        throw new Error('Failed to fetch contacts')
+      }
     } catch (error) {
       console.error('Error loading contacts:', error)
       toast.error('خطأ في تحميل الرسائل')
@@ -162,13 +166,13 @@ export default function AdminPanel() {
 
   const loadReservations = async () => {
     try {
-      const { data, error } = await supabase
-        .from('reservations')
-        .select('*, services(title)')
-        .order('created_at', { ascending: false })
-      
-      if (error) throw error
-      setReservations(data || [])
+      const response = await fetch('/api/reservations')
+      if (response.ok) {
+        const result = await response.json()
+        setReservations(result.data || [])
+      } else {
+        throw new Error('Failed to fetch reservations')
+      }
     } catch (error) {
       console.error('Error loading reservations:', error)
       toast.error('خطأ في تحميل الحجوزات')
@@ -179,14 +183,17 @@ export default function AdminPanel() {
     if (!confirm('هل أنت متأكد من حذف هذه الخدمة؟')) return
     
     try {
-      const { error } = await supabase
-        .from('services')
-        .delete()
-        .eq('id', id)
+      const response = await fetch(`/api/services?id=${id}`, {
+        method: 'DELETE'
+      })
       
-      if (error) throw error
-      toast.success('تم حذف الخدمة بنجاح')
-      loadServices()
+      if (response.ok) {
+        toast.success('تم حذف الخدمة بنجاح')
+        loadServices()
+      } else {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to delete service')
+      }
     } catch (error) {
       console.error('Error deleting service:', error)
       toast.error('خطأ في حذف الخدمة')
@@ -195,27 +202,52 @@ export default function AdminPanel() {
 
   const updateReservationStatus = async (id: string, status: string) => {
     try {
-      const { error } = await supabase
-        .from('reservations')
-        .update({ status, updated_at: new Date().toISOString() })
-        .eq('id', id)
+      const response = await fetch(`/api/reservations?id=${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status })
+      })
       
-      if (error) throw error
-      toast.success('تم تحديث حالة الحجز')
-      loadReservations()
+      if (response.ok) {
+        toast.success('تم تحديث حالة الحجز')
+        loadReservations()
+      } else {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to update reservation')
+      }
     } catch (error) {
       console.error('Error updating reservation:', error)
       toast.error('خطأ في تحديث الحجز')
     }
   }
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      loadDashboardData()
+  const handleLogin = async (email: string, password: string) => {
+    try {
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false
+      })
+      
+      if (result?.error) {
+        toast.error('خطأ في تسجيل الدخول')
+      } else {
+        toast.success('تم تسجيل الدخول بنجاح')
+      }
+    } catch (error) {
+      console.error('Login error:', error)
+      toast.error('خطأ في تسجيل الدخول')
     }
-  }, [activeTab, isAuthenticated])
+  }
 
-  if (isLoading) {
+  const handleLogout = async () => {
+    await signOut()
+    toast.success('تم تسجيل الخروج')
+  }
+
+  if (status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <BarberLoader type="scissor" size="lg" text="جاري تحميل لوحة التحكم..." />
@@ -223,7 +255,7 @@ export default function AdminPanel() {
     )
   }
 
-  if (!isAuthenticated) {
+  if (!session) {
     return <LoginForm onLogin={handleLogin} />
   }
 
@@ -243,12 +275,15 @@ export default function AdminPanel() {
                 <Scissors className="w-8 h-8 text-primary-500" />
                 <h1 className="text-xl font-bold text-gray-900">لوحة التحكم الإدارية</h1>
               </div>
-              <button
-                onClick={handleLogout}
-                className="btn-secondary text-sm"
-              >
-                تسجيل خروج
-              </button>
+              <div className="flex items-center space-x-4">
+                <span className="text-sm text-gray-600">مرحباً، {session.user?.email}</span>
+                <button
+                  onClick={handleLogout}
+                  className="btn-secondary text-sm"
+                >
+                  تسجيل خروج
+                </button>
+              </div>
             </div>
           </div>
         </header>
@@ -406,20 +441,20 @@ function DashboardView({ stats }: { stats: AdminStats }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="admin-card">
           <h3 className="text-lg font-semibold mb-4">إحصائيات سريعة</h3>
-                      <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">الخدمات النشطة</span>
-                <span className="font-semibold number-ltr">{stats.totalServices}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">الرسائل الجديدة</span>
-                <span className="font-semibold number-ltr">{stats.totalContacts}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">الحجوزات المؤكدة</span>
-                <span className="font-semibold number-ltr">{stats.totalReservations}</span>
-              </div>
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">الخدمات النشطة</span>
+              <span className="font-semibold number-ltr">{stats.totalServices}</span>
             </div>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">الرسائل الجديدة</span>
+              <span className="font-semibold number-ltr">{stats.totalContacts}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">الحجوزات المؤكدة</span>
+              <span className="font-semibold number-ltr">{stats.totalReservations}</span>
+            </div>
+          </div>
         </div>
 
         <div className="admin-card">
@@ -604,7 +639,7 @@ function ReservationsView({
                     </div>
                   </td>
                   <td className="table-cell">
-                    {(reservation as any).services?.title || 'خدمة محذوفة'}
+                    {reservation.service?.title || 'خدمة محذوفة'}
                   </td>
                   <td className="table-cell">
                     <div>

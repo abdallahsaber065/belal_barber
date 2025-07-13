@@ -4,7 +4,6 @@ import { motion } from 'framer-motion'
 import { Phone, MapPin, Clock, Mail, MessageCircle, Send, CheckCircle } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { supabase } from '../lib/supabaseClient'
 import { validateEmail, validatePhone } from '../lib/utils'
 import { BarberLoader } from '../components/LoaderBarber'
 import config from '../config.json'
@@ -35,23 +34,27 @@ export default function Contact() {
         return
       }
 
-      // Submit to Supabase
-      const { error } = await supabase
-        .from('contacts')
-        .insert([{
+      // Submit to API route
+      const response = await fetch('/api/contacts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           name: data.name,
           email: data.email || null,
           phone: data.phone,
           message: data.message
-        }])
+        })
+      })
 
-      if (error) {
-        console.error('Error submitting contact form:', error)
-        toast.error(config.contact.form.errorMessage)
-      } else {
-        toast.success(config.contact.form.successMessage)
-        reset()
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to submit contact form')
       }
+
+      toast.success(config.contact.form.successMessage)
+      reset()
     } catch (error) {
       console.error('Error submitting contact form:', error)
       toast.error(config.contact.form.errorMessage)
@@ -375,5 +378,5 @@ export default function Contact() {
       </section>
 
     </>
-  ) 
+  )
 } 

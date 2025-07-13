@@ -1,17 +1,15 @@
 import type { AppProps } from 'next/app'
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
+import { SessionProvider } from 'next-auth/react'
 import { Toaster } from 'react-hot-toast'
-import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
-import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { PageLoader } from '../components/LoaderBarber'
 import config from '../config.json'
 import '../styles/globals.css'
 
-export default function App({ Component, pageProps }: AppProps) {
-  const [supabaseClient] = useState(() => createPagesBrowserClient())
+export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -60,10 +58,7 @@ export default function App({ Component, pageProps }: AppProps) {
         />
       </Head>
 
-      <SessionContextProvider
-        supabaseClient={supabaseClient}
-        initialSession={pageProps.initialSession}
-      >
+      <SessionProvider session={session}>
         <div className="min-h-screen flex flex-col">
           <PageLoader isLoading={isLoading} />
           
@@ -121,7 +116,7 @@ export default function App({ Component, pageProps }: AppProps) {
             }}
           />
         </div>
-      </SessionContextProvider>
+      </SessionProvider>
     </>
   )
 } 

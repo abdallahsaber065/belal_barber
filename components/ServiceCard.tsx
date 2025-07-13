@@ -1,8 +1,20 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Clock, Tag, ArrowLeft, Phone } from 'lucide-react'
-import { Service } from '../lib/supabaseClient'
 import config from '../config.json'
+
+// Service type definition
+interface Service {
+  id: string
+  title: string
+  description: string
+  price: string
+  duration: string
+  icon: string
+  is_active?: boolean
+  created_at?: string
+  updated_at?: string
+}
 
 interface ServiceCardProps {
   service: Service | {
@@ -109,6 +121,28 @@ export const ServiceGrid: React.FC<{
   services: Service[] | any[]
   className?: string
 }> = ({ services, className = '' }) => {
+  // Handle loading state or invalid data
+  if (!services || !Array.isArray(services)) {
+    return (
+      <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ${className}`}>
+        <div className="col-span-full text-center py-8">
+          <p className="text-secondary-500">جاري تحميل الخدمات...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Handle empty services array
+  if (services.length === 0) {
+    return (
+      <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ${className}`}>
+        <div className="col-span-full text-center py-8">
+          <p className="text-secondary-500">لا توجد خدمات متاحة حالياً</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ${className}`}>
       {services.map((service, index) => (

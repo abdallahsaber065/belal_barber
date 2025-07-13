@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { supabaseAdmin } from '../../lib/supabaseClient'
+import { prisma } from '../../lib/prisma'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method } = req
@@ -21,25 +21,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 async function handleGet(req: NextApiRequest, res: NextApiResponse) {
   try {
-    if (!supabaseAdmin) {
-      return res.status(500).json({ error: 'Database connection not available' })
-    }
-
-    const { data, error } = await supabaseAdmin
-      .from('services')
-      .select('*')
-      .eq('is_active', true)
-      .order('created_at', { ascending: true })
-
-    if (error) {
-      console.error('Error fetching services:', error)
-      return res.status(500).json({ error: 'Failed to fetch services' })
-    }
-
+    const data = await prisma.service.findMany({
+      where: { is_active: true },
+      orderBy: { created_at: 'asc' }
+    })
     res.status(200).json({ data })
   } catch (error) {
-    console.error('API Error:', error)
-    res.status(500).json({ error: 'Internal server error' })
+    console.error('Error fetching services:', error)
+    res.status(500).json({ error: 'Failed to fetch services' })
   }
 }
 
@@ -51,31 +40,21 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
       return res.status(400).json({ error: 'Missing required fields' })
     }
 
-    if (!supabaseAdmin) {
-      return res.status(500).json({ error: 'Database connection not available' })
-    }
-
-    const { data, error } = await supabaseAdmin
-      .from('services')
-      .insert([{
+    const data = await prisma.service.create({
+      data: {
         title,
         description,
         price,
         duration,
         icon,
         is_active: true
-      }])
-      .select()
-
-    if (error) {
-      console.error('Error creating service:', error)
-      return res.status(500).json({ error: 'Failed to create service' })
-    }
+      }
+    })
 
     res.status(201).json({ data })
   } catch (error) {
-    console.error('API Error:', error)
-    res.status(500).json({ error: 'Internal server error' })
+    console.error('Error creating service:', error)
+    res.status(500).json({ error: 'Failed to create service' })
   }
 }
 
@@ -84,11 +63,11 @@ async function handlePut(req: NextApiRequest, res: NextApiResponse) {
     const { id } = req.query
     const { title, description, price, duration, icon, is_active } = req.body
 
-    if (!id) {
+    if (!id || typeof id !== 'string') {
       return res.status(400).json({ error: 'Service ID is required' })
     }
 
-    const updateData: any = { updated_at: new Date().toISOString() }
+    const updateData: any = {}
     if (title !== undefined) updateData.title = title
     if (description !== undefined) updateData.description = description
     if (price !== undefined) updateData.price = price
@@ -96,25 +75,21 @@ async function handlePut(req: NextApiRequest, res: NextApiResponse) {
     if (icon !== undefined) updateData.icon = icon
     if (is_active !== undefined) updateData.is_active = is_active
 
-    if (!supabaseAdmin) {
-      return res.status(500).json({ error: 'Database connection not available' })
-    }
-
-    const { data, error } = await supabaseAdmin
-      .from('services')
-      .update(updateData)
-      .eq('id', id)
-      .select()
-
-    if (error) {
-      console.error('Error updating service:', error)
-      return res.status(500).json({ error: 'Failed to update service' })
-    }
+    const data = await prisma.service.update({
+      where: { id },
+      data: updateData
+    })
 
     res.status(200).json({ data })
   } catch (error) {
-    console.error('API Error:', error)
-    res.status(500).json({ error: 'Internal server error' })
+    console.error('Error updating service:', error)
+    
+    // Check if the error is due to record not found
+    if (error instanceof Error && error.message.includes('Record to update not found')) {
+      return res.status(404).json({ error: 'Service not found' })
+    }
+    
+    res.status(500).json({ error: 'Failed to update service' })
   }
 }
 
@@ -122,27 +97,23 @@ async function handleDelete(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { id } = req.query
 
-    if (!id) {
+    if (!id || typeof id !== 'string') {
       return res.status(400).json({ error: 'Service ID is required' })
     }
 
-    if (!supabaseAdmin) {
-      return res.status(500).json({ error: 'Database connection not available' })
-    }
-
-    const { error } = await supabaseAdmin
-      .from('services')
-      .delete()
-      .eq('id', id)
-
-    if (error) {
-      console.error('Error deleting service:', error)
-      return res.status(500).json({ error: 'Failed to delete service' })
-    }
+    await prisma.service.delete({
+      where: { id }
+    })
 
     res.status(200).json({ message: 'Service deleted successfully' })
   } catch (error) {
-    console.error('API Error:', error)
-    res.status(500).json({ error: 'Internal server error' })
+    console.error('Error deleting service:', error)
+    
+    // Check if the error is due to record not found
+    if (error instanceof Error && error.message.includes('Record to delete does not exist')) {
+      return res.status(404).json({ error: 'Service not found' })
+    }
+    
+    res.status(500).json({ error: 'Failed to delete service' })
   }
 } 
