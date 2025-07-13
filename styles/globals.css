@@ -374,4 +374,54 @@
   .backface-hidden {
     backface-visibility: hidden;
   }
+
+  /* Admin responsive utilities */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Mobile responsive helpers */
+  @media (max-width: 768px) {
+    .admin-card {
+      @apply p-4;
+    }
+    
+    .table-container {
+      @apply overflow-x-auto;
+    }
+    
+    .responsive-grid {
+      @apply grid-cols-1 gap-4;
+    }
+    
+    .responsive-grid.stats {
+      @apply grid-cols-1 sm:grid-cols-2;
+    }
+  }
+
+  /* Custom animations */
+  .animate-bounce-gentle {
+    animation: bounce-gentle 3s ease-in-out infinite;
+  }
+
+  @keyframes bounce-gentle {
+    0%, 100% {
+      transform: translateY(0%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: translateY(-5%);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
 } 
