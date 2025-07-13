@@ -180,14 +180,14 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="responsive-grid"
+              className="responsive-grid pb-6 sm:pb-0"
             >
               {config.hero.features.map((feature, index) => (
                 <div
                   key={index}
                   className="bg-white/10 backdrop-blur-sm rounded-xl p-4 hover:bg-white/20 transition-all duration-300"
                 >
-                  <div className="rtl-flex reverse">
+                  <div className="rtl-flex">
                     <CheckCircle className="w-5 h-5 text-gold-400" />
                     <span className="text-white text-sm font-medium">{feature}</span>
                   </div>
@@ -199,7 +199,7 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-white">
+      {/* <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="responsive-grid stats">
             {stats.map((stat, index) => (
@@ -223,7 +223,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
 
       {/* All Services */}

@@ -31,11 +31,11 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-secondary-900 text-white">
       {/* Main footer content */}
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="container mx-auto px-4 pt-12 pb-4 md:pb-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Company Info */}
           <div className="space-y-4">
-              <div className="rtl-flex reverse flex justify-center items-center">
+            <div className="rtl-flex reverse flex justify-center items-center">
               <div className="relative">
                 <Scissors className="w-8 h-8 text-gold-400" />
                 <div className="absolute -top-1 -right-1 w-2 h-2 bg-gold-400 rounded-full animate-pulse" />
@@ -48,7 +48,7 @@ const Footer: React.FC = () => {
             <p className="text-secondary-300 text-sm leading-relaxed">
               {config.about.description}
             </p>
-            <div className="flex space-x-4">
+            <div className="flex gap-4">
               {socialLinks.map((social, index) => (
                 <a
                   key={index}
@@ -61,13 +61,42 @@ const Footer: React.FC = () => {
               ))}
             </div>
           </div>
+          {/* Contact Info */}
+          <div className="space-y-4 md:space-y-0 md:flex md:flex-col md:justify-between h-full">
+            <div>
+              <h4 className="text-lg font-semibold text-gold-400 mb-4">
+                {config.footer.contactInfo}
+              </h4>
+              <div className="space-y-3">
+                {contactInfo.map((item, index) => (
+                  <div key={index} className="rtl-flex items-start">
+                    <item.icon className="w-5 h-5 text-gold-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      {item.href ? (
+                        <a
+                          href={item.href}
+                          className={`text-secondary-300 hover:text-gold-400 transition-colors duration-300 ${item.icon === Phone ? 'number-ltr' : ''}`}
+                        >
+                          {item.text}
+                        </a>
+                      ) : (
+                        <span className={`text-secondary-300 ${item.icon === Phone ? 'number-ltr' : ''}`}>
+                          {item.text}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
 
           {/* Quick Links */}
-          <div className="space-y-4">
+          <div >
             <h4 className="text-lg font-semibold text-gold-400 mb-4">
               {config.footer.quickLinks}
             </h4>
-            <ul className="space-y-2">
+            <ul className="flex flex-row flex-wrap gap-4 sm:space-y-2 sm:flex-col">
               {quickLinks.map((link, index) => (
                 <li key={index}>
                   <Link 
@@ -82,7 +111,7 @@ const Footer: React.FC = () => {
           </div>
 
           {/* Services */}
-          <div className="space-y-4">
+          <div>
             <h4 className="text-lg font-semibold text-gold-400 mb-4">
               {config.services.title}
             </h4>
@@ -99,61 +128,23 @@ const Footer: React.FC = () => {
               ))}
             </ul>
           </div>
-          {/* Contact Info */}
-          <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-gold-400 mb-4">
-              {config.footer.contactInfo}
-            </h4>
-            <div className="space-y-3">
-              {contactInfo.map((item, index) => (
-                <div key={index} className="rtl-flex reverse items-start">
-                  <item.icon className="w-5 h-5 text-gold-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    {item.href ? (
-                      <a 
-                        href={item.href}
-                        className={`text-secondary-300 hover:text-gold-400 transition-colors duration-300 ${item.icon === Phone ? 'number-ltr' : ''}`}
-                      >
-                        {item.text}
-                      </a>
-                    ) : (
-                      <span className={`text-secondary-300 ${item.icon === Phone ? 'number-ltr' : ''}`}>
-                        {item.text}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
-
-        {/* Features/Values */}
-        <div className="mt-12 pt-8 border-t border-secondary-700">
-          <div className="responsive-grid">
-            {config.hero.features.map((feature, index) => (
-              <div key={index} className="rtl-flex reverse">
-                <div className="w-2 h-2 bg-gold-400 rounded-full" />
-                <span className="text-secondary-300 text-sm">{feature}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-
       </div>
 
-      {/* Bottom bar */}
-      <div className="border-t border-secondary-700 bg-secondary-900">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-secondary-400 text-sm">
-              {config.footer.copyright}
-            </div>
-            <div className="flex items-center space-x-6 text-secondary-400 text-sm">
-              <div className="flex items-center space-x-2">
-                <span>By <a href="https://www.linkedin.com/in/abdallahsaber065" target="_blank" rel="noopener noreferrer" className="text-gold-400">Abdallah Saber</a></span>
-              </div>
+      {/* Copyright -*/}
+      <div className="border-t md:border-t-0 border-secondary-700 bg-secondary-900">
+        <div className="container mx-auto px-4 py-5 md:pt-0">
+          <div className="flex flex-col justify-between items-center space-y-4 md:space-y-0">
+            <div className="text-secondary-400 text-sm text-center">
+              <span>جميع الحقوق محفوظة - </span>
+              <a
+                href="https://www.linkedin.com/in/abdallahsaber065"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gold-400"
+              >
+                Abdallah Saber &copy;  {new Date().getFullYear()}
+              </a>
             </div>
           </div>
         </div>
