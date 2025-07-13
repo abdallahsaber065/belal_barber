@@ -162,7 +162,6 @@ export default function Contact() {
             >
               <span className="mr-2">اتصل الآن</span>
               <Phone className="w-5 h-5 mr-2" />
-
             </a>
             <a
               href={`https://wa.me/${config.contact.phone.value.replace(/\D/g, '')}`}
@@ -172,7 +171,6 @@ export default function Contact() {
             >
               <span className="mr-2">واتساب</span>
               <MessageCircle className="w-5 h-5 mr-2" />
-
             </a>
           </div>
         </div>
@@ -299,28 +297,27 @@ export default function Contact() {
               className="space-y-6"
             >
               {/* Map Placeholder */}
-                <div className="card overflow-hidden">
-                  <div className="mb-4">
-                    <div className="flex items-center justify-center mb-2">
-                      <MapPin className="w-6 h-6 text-primary-500 ml-2" />
-                      <h3 className="font-semibold text-secondary-700">موقعنا على الخريطة</h3>
-                    </div>
-                    <p className="text-secondary-600 text-center">{config.contact.address.value}</p>
+              <div className="card overflow-hidden">
+                <div className="mb-4">
+                  <div className="flex items-center justify-center mb-2">
+                    <MapPin className="w-6 h-6 text-primary-500 ml-2" />
+                    <h3 className="font-semibold text-secondary-700">موقعنا على الخريطة</h3>
                   </div>
-                  <div className="relative w-full h-64 rounded-lg overflow-hidden">
-                    <iframe 
-                      src={config.contact.map.embed_link} 
-                      width="100%" 
-                      height="100%" 
-                      style={{ border: 0 }} 
-                      allowFullScreen 
-                      loading="lazy" 
-                      referrerPolicy="no-referrer-when-downgrade"
-                      className="absolute inset-0"
-                    />
-                  </div>
+                  <p className="text-secondary-600 text-center">{config.contact.address.value}</p>
                 </div>
-
+                <div className="relative w-full h-64 rounded-lg overflow-hidden">
+                  <iframe 
+                    src={config.contact.map.embed_link} 
+                    width="100%" 
+                    height="100%" 
+                    style={{ border: 0 }} 
+                    allowFullScreen 
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="absolute inset-0"
+                  />
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>

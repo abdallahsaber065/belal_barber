@@ -168,7 +168,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="responsive-grid"
+              className="responsive-grid pb-6 sm:pb-0"
             >
               {config.hero.features.map((feature, index) => (
                 <div
@@ -187,7 +187,7 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-white">
+      {/* <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="responsive-grid stats">
             {stats.map((stat, index) => (
@@ -211,7 +211,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
 
       {/* All Services */}

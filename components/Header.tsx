@@ -141,7 +141,7 @@ const Header: React.FC<HeaderProps> = ({ isFixed = true }) => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="mobile-menu md:hidden"
+            className="fixed top-16 left-0 right-0 bg-secondary-900 shadow-lg z-50 md:hidden"
           >
             <div className="container mx-auto px-4 py-6">
               <nav className="flex flex-col space-y-4">
@@ -150,14 +150,12 @@ const Header: React.FC<HeaderProps> = ({ isFixed = true }) => {
                     key={item.path}
                     href={item.path}
                     onClick={closeMobileMenu}
-                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors duration-300 ${
-                      isActiveRoute(item.path)
-                        ? 'bg-gold-400 text-secondary-900'
-                        : 'text-white hover:bg-white/10'
+                    className={`mobile-nav-item ${
+                      isActiveRoute(item.path) ? 'active' : ''
                     }`}
                   >
                     <span className="text-xl">{item.icon}</span>
-                    <span className="text-lg font-medium">{item.name}</span>
+                    <span>{item.name}</span>
                   </Link>
                 ))}
               </nav>
@@ -166,11 +164,11 @@ const Header: React.FC<HeaderProps> = ({ isFixed = true }) => {
               <div className="mt-6">
                 <a
                   href={`tel:${config.contact.phone.value}`}
-                  className="btn-gold w-full text-center block"
+                  className="btn-gold w-full text-center flex items-center justify-center gap-2"
                   onClick={closeMobileMenu}
                 >
-                  {config.hero.ctaText}
-                  <Phone className="w-5 h-5 ml-2" />
+                  <span>{config.hero.ctaText}</span>
+                  <Phone className="w-5 h-5" />
                 </a>
               </div>
             </div>
@@ -185,7 +183,7 @@ const Header: React.FC<HeaderProps> = ({ isFixed = true }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30 md:hidden"
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden"
             onClick={closeMobileMenu}
           />
         )}

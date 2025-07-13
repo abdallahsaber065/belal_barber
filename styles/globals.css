@@ -8,16 +8,19 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
   
   body {
     @apply font-arabic text-secondary-900 bg-gray-50;
     direction: rtl;
     line-height: 1.6;
+    overflow-x: hidden;
   }
   
   * {
     @apply border-secondary-200;
+    box-sizing: border-box;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -65,6 +68,19 @@
     .responsive-grid.stats {
       grid-template-columns: repeat(2, 1fr);
     }
+  }
+
+  /* Prevent horizontal overflow on all container elements */
+  .container {
+    max-width: 100%;
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Ensure all sections don't cause horizontal overflow */
+  section {
+    overflow-x: hidden;
   }
 }
 
@@ -249,9 +265,17 @@
     @apply w-full;
   }
   
-  /* Mobile menu */
-  .mobile-menu {
-    @apply fixed top-0 left-0 w-full h-full bg-secondary-900/95 backdrop-blur-sm z-50 transform transition-transform duration-300;
+  /* Mobile navigation improvements */
+  .mobile-nav-item {
+    @apply flex items-center justify-center gap-3 px-4 py-3 rounded-lg transition-colors duration-300 text-lg font-medium;
+  }
+  
+  .mobile-nav-item.active {
+    @apply bg-gold-400 text-secondary-900;
+  }
+  
+  .mobile-nav-item:not(.active) {
+    @apply text-white hover:bg-white/10;
   }
   
   /* Admin panel styles */
