@@ -247,7 +247,7 @@ export default function Home() {
       <section className="py-20 bg-secondary-900 text-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gold-400">
               آراء عملائنا
             </h2>
             <div className="section-divider" />
