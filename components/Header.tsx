@@ -37,7 +37,6 @@ const Header: React.FC<HeaderProps> = ({ isFixed = true }) => {
 
   const navigationItems = [
     { name: config.navigation.home, path: '/', icon: '' },
-    { name: config.navigation.services, path: '/services', icon: '' },
     { name: config.navigation.contact, path: '/contact', icon: '' },
   ]
 
@@ -59,7 +58,7 @@ const Header: React.FC<HeaderProps> = ({ isFixed = true }) => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link href="/" className="flex items-center space-x-3 group">
+            <Link href="/" className="rtl-flex reverse group">
               <div className={`relative transition-all duration-300 ${
                 isScrolled ? 'text-primary-500' : 'text-gold-400'
               }`}>
@@ -96,7 +95,7 @@ const Header: React.FC<HeaderProps> = ({ isFixed = true }) => {
                       : 'text-white hover:text-gold-400'
                   }`}
                 >
-                  <span className="mr-2">{item.icon}</span>
+                  <span className="ml-2">{item.icon}</span>
                   {item.name}
                 </Link>
               ))}
@@ -170,8 +169,8 @@ const Header: React.FC<HeaderProps> = ({ isFixed = true }) => {
                   className="btn-gold w-full text-center block"
                   onClick={closeMobileMenu}
                 >
-                  <Phone className="w-5 h-5 ml-2 inline" />
                   {config.hero.ctaText}
+                  <Phone className="w-5 h-5 ml-2" />
                 </a>
               </div>
             </div>

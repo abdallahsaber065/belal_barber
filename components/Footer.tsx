@@ -35,13 +35,13 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-3">
+              <div className="rtl-flex reverse flex justify-center items-center">
               <div className="relative">
                 <Scissors className="w-8 h-8 text-gold-400" />
                 <div className="absolute -top-1 -right-1 w-2 h-2 bg-gold-400 rounded-full animate-pulse" />
               </div>
-              <div>
-                <h3 className="text-xl font-bold">{config.hero.title}</h3>
+              <div className="text-right">
+                <h3 className="text-xl font-bold text-white">{config.hero.title}</h3>
                 <p className="text-sm text-gold-400 english">{config.hero.subtitle}</p>
               </div>
             </div>
@@ -99,7 +99,6 @@ const Footer: React.FC = () => {
               ))}
             </ul>
           </div>
-
           {/* Contact Info */}
           <div className="space-y-4">
             <h4 className="text-lg font-semibold text-gold-400 mb-4">
@@ -107,18 +106,20 @@ const Footer: React.FC = () => {
             </h4>
             <div className="space-y-3">
               {contactInfo.map((item, index) => (
-                <div key={index} className="flex items-start space-x-3">
+                <div key={index} className="rtl-flex reverse items-start">
                   <item.icon className="w-5 h-5 text-gold-400 mt-0.5 flex-shrink-0" />
                   <div>
                     {item.href ? (
                       <a 
                         href={item.href}
-                        className="text-secondary-300 hover:text-gold-400 transition-colors duration-300"
+                        className={`text-secondary-300 hover:text-gold-400 transition-colors duration-300 ${item.icon === Phone ? 'number-ltr' : ''}`}
                       >
                         {item.text}
                       </a>
                     ) : (
-                      <span className="text-secondary-300">{item.text}</span>
+                      <span className={`text-secondary-300 ${item.icon === Phone ? 'number-ltr' : ''}`}>
+                        {item.text}
+                      </span>
                     )}
                   </div>
                 </div>
@@ -129,9 +130,9 @@ const Footer: React.FC = () => {
 
         {/* Features/Values */}
         <div className="mt-12 pt-8 border-t border-secondary-700">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="responsive-grid">
             {config.hero.features.map((feature, index) => (
-              <div key={index} className="flex items-center space-x-3">
+              <div key={index} className="rtl-flex reverse">
                 <div className="w-2 h-2 bg-gold-400 rounded-full" />
                 <span className="text-secondary-300 text-sm">{feature}</span>
               </div>
@@ -139,32 +140,7 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* Newsletter/CTA Section */}
-        <div className="mt-12 pt-8 border-t border-secondary-700">
-          <div className="text-center">
-            <h4 className="text-xl font-semibold text-white mb-4">
-              {config.hero.ctaText}
-            </h4>
-            <p className="text-secondary-300 mb-6">
-              {config.hero.description}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href={`tel:${config.contact.phone.value}`}
-                className="btn-gold inline-flex items-center justify-center"
-              >
-                <Phone className="w-5 h-5 ml-2" />
-                {config.hero.ctaText}
-              </a>
-              <Link
-                href="/services"
-                className="btn-outline inline-flex items-center justify-center"
-              >
-                {config.hero.ctaSecondary}
-              </Link>
-            </div>
-          </div>
-        </div>
+
       </div>
 
       {/* Bottom bar */}
@@ -175,15 +151,8 @@ const Footer: React.FC = () => {
               {config.footer.copyright}
             </div>
             <div className="flex items-center space-x-6 text-secondary-400 text-sm">
-              <Link href="/privacy" className="hover:text-gold-400 transition-colors">
-                سياسة الخصوصية
-              </Link>
-              <Link href="/terms" className="hover:text-gold-400 transition-colors">
-                الشروط والأحكام
-              </Link>
               <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                <span>متاح الآن</span>
+                <span>By <a href="https://www.linkedin.com/in/abdallahsaber065" target="_blank" rel="noopener noreferrer" className="text-gold-400">Abdallah Saber</a></span>
               </div>
             </div>
           </div>

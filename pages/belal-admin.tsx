@@ -396,7 +396,7 @@ function DashboardView({ stats }: { stats: AdminStats }) {
               </div>
               <div className="mr-4">
                 <p className="text-sm text-gray-600">{stat.label}</p>
-                <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                <p className="text-2xl font-bold text-gray-900 number-ltr">{stat.value}</p>
               </div>
             </div>
           </motion.div>
@@ -406,20 +406,20 @@ function DashboardView({ stats }: { stats: AdminStats }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="admin-card">
           <h3 className="text-lg font-semibold mb-4">إحصائيات سريعة</h3>
-          <div className="space-y-3">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">الخدمات النشطة</span>
-              <span className="font-semibold">{stats.totalServices}</span>
+                      <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">الخدمات النشطة</span>
+                <span className="font-semibold number-ltr">{stats.totalServices}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">الرسائل الجديدة</span>
+                <span className="font-semibold number-ltr">{stats.totalContacts}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">الحجوزات المؤكدة</span>
+                <span className="font-semibold number-ltr">{stats.totalReservations}</span>
+              </div>
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">الرسائل الجديدة</span>
-              <span className="font-semibold">{stats.totalContacts}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">الحجوزات المؤكدة</span>
-              <span className="font-semibold">{stats.totalReservations}</span>
-            </div>
-          </div>
         </div>
 
         <div className="admin-card">
@@ -487,8 +487,8 @@ function ServicesView({
                       </div>
                     </div>
                   </td>
-                  <td className="table-cell font-medium">{service.price}</td>
-                  <td className="table-cell">{service.duration}</td>
+                  <td className="table-cell font-medium number-ltr">{service.price}</td>
+                  <td className="table-cell number-ltr">{service.duration}</td>
                   <td className="table-cell">
                     <span className={`px-2 py-1 text-xs rounded-full ${
                       service.is_active 
@@ -499,7 +499,7 @@ function ServicesView({
                     </span>
                   </td>
                   <td className="table-cell">
-                    <div className="flex space-x-2">
+                    <div className="flex gap-2">
                       <button className="admin-button-secondary">
                         <Edit className="w-4 h-4" />
                       </button>
@@ -537,7 +537,7 @@ function ContactsView({ contacts }: { contacts: Contact[] }) {
                   {formatDate(contact.created_at)}
                 </p>
               </div>
-              <div className="flex space-x-2">
+              <div className="flex gap-2">
                 <a href={`tel:${contact.phone}`} className="admin-button">
                   <Phone className="w-4 h-4" />
                 </a>
@@ -627,7 +627,7 @@ function ReservationsView({
                     </span>
                   </td>
                   <td className="table-cell">
-                    <div className="flex space-x-2">
+                    <div className="flex gap-2">
                       {reservation.status === 'pending' && (
                         <>
                           <button 

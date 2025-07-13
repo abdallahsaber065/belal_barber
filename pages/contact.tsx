@@ -108,7 +108,7 @@ export default function Contact() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-glow">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-glow text-amber-400">
                 {config.contact.title}
               </h1>
               <p className="text-xl text-white/90 max-w-2xl mx-auto mb-8">
@@ -141,7 +141,7 @@ export default function Contact() {
                 {item.href ? (
                   <a
                     href={item.href}
-                    className={`${item.color} hover:underline transition-colors duration-300`}
+                    className={`${item.color} hover:underline transition-colors duration-300 ${item.icon === Phone ? 'number-ltr' : ''}`}
                     target={item.href.startsWith('http') ? '_blank' : undefined}
                     rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                   >
@@ -160,8 +160,9 @@ export default function Contact() {
               href={`tel:${config.contact.phone.value}`}
               className="btn-primary text-lg px-8 py-4 inline-flex items-center justify-center"
             >
-              <Phone className="w-5 h-5 ml-2" />
-              اتصل الآن
+              <span className="mr-2">اتصل الآن</span>
+              <Phone className="w-5 h-5 mr-2" />
+
             </a>
             <a
               href={`https://wa.me/${config.contact.phone.value.replace(/\D/g, '')}`}
@@ -169,8 +170,9 @@ export default function Contact() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <MessageCircle className="w-5 h-5 ml-2" />
-              واتساب
+              <span className="mr-2">واتساب</span>
+              <MessageCircle className="w-5 h-5 mr-2" />
+
             </a>
           </div>
         </div>
@@ -279,7 +281,7 @@ export default function Contact() {
                         <span>جاري الإرسال...</span>
                       </div>
                     ) : (
-                      <div className="flex items-center justify-center space-x-2">
+                      <div className="flex items-center justify-center gap-2">
                         <Send className="w-5 h-5" />
                         <span>{config.contact.form.submitText}</span>
                       </div>
@@ -375,41 +377,6 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Emergency Contact */}
-      <section className="py-20 bg-gradient-to-r from-primary-500 to-primary-700 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              تحتاج خدمة عاجلة؟
-            </h2>
-            <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
-              نحن متاحون لخدمتك - اتصل بنا الآن للحصول على موعد سريع
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href={`tel:${config.contact.phone.value}`}
-                className="btn-gold text-lg px-8 py-4 inline-flex items-center justify-center"
-              >
-                <Phone className="w-5 h-5 ml-2" />
-                اتصل فوراً
-              </a>
-              <a
-                href={`https://wa.me/${config.contact.phone.value.replace(/\D/g, '')}`}
-                className="btn-outline border-white text-white hover:bg-white hover:text-primary-500 text-lg px-8 py-4 inline-flex items-center justify-center"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <MessageCircle className="w-5 h-5 ml-2" />
-                واتساب سريع
-              </a>
-            </div>
-          </motion.div>
-        </div>
-      </section>
     </>
-  )
+  ) 
 } 

@@ -72,7 +72,7 @@ export default function Home() {
 
   const stats = [
     { icon: Users, value: '500+', label: 'عميل راضٍ' },
-    { icon: Award, value: '2+', label: 'سنوات خبرة' },
+    { icon: Award, value: '6+', label: 'سنوات خبرة' },
     { icon: Clock, value: '12+', label: 'ساعة عمل يومياً' },
   ]
 
@@ -106,7 +106,7 @@ export default function Home() {
       </Head>
 
       {/* Hero Section */}
-      <section className="hero-background min-h-screen flex items-center justify-center relative overflow-hidden">
+      <section className="hero-background min-h-screen flex justify-center relative overflow-hidden">
         {/* Background Effects */}
         <div className="absolute inset-0">
           <div className="absolute top-20 left-20 w-32 h-32 bg-gold-400/20 rounded-full blur-3xl animate-pulse" />
@@ -122,13 +122,13 @@ export default function Home() {
               transition={{ duration: 0.8 }}
               className="mb-6"
             >
-              
-              <img 
-                src="/logo.png"
-                alt={config.hero.title}
-                width={400}
-                height={120}
-                className="mx-auto"
+                
+                <img 
+                  src="/logo.png"
+                  alt={config.hero.title}
+                  width={400}
+                  height={100}
+                  className="mx-auto mt-3 mb-2"
               />
               
               <p className="text-xl md:text-2xl text-gold-400 mb-2 english font-medium">
@@ -144,18 +144,18 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
+              className="flex flex-col sm:flex-row gap-4 justify-center mb-8"
             >
               <a
                 href={`tel:${config.contact.phone.value}`}
                 className="btn-gold text-lg px-8 py-4 inline-flex items-center justify-center"
               >
-                <Phone className="w-5 h-5 ml-2" />
-                {config.hero.ctaText}
+               <span className="mr-2">{config.hero.ctaText}</span>
+                <Phone className="w-5 h-5 mr-2" />
               </a>
               
               <Link
-                href="/services"
+                href="#services"
                 className="btn-outline text-lg px-8 py-4 inline-flex items-center justify-center border-white text-white hover:bg-white hover:text-secondary-900"
               >
                 {config.hero.ctaSecondary}
@@ -168,14 +168,14 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+              className="responsive-grid"
             >
               {config.hero.features.map((feature, index) => (
                 <div
                   key={index}
                   className="bg-white/10 backdrop-blur-sm rounded-xl p-4 hover:bg-white/20 transition-all duration-300"
                 >
-                  <div className="flex items-center space-x-3">
+                  <div className="rtl-flex reverse">
                     <CheckCircle className="w-5 h-5 text-gold-400" />
                     <span className="text-white text-sm font-medium">{feature}</span>
                   </div>
@@ -189,7 +189,7 @@ export default function Home() {
       {/* Stats Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="responsive-grid stats">
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
@@ -201,7 +201,7 @@ export default function Home() {
                 <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <stat.icon className="w-8 h-8 text-primary-500" />
                 </div>
-                <div className="text-3xl font-bold text-secondary-900 mb-1">
+                <div className="text-3xl font-bold text-secondary-900 mb-1 number-ltr">
                   {stat.value}
                 </div>
                 <div className="text-secondary-600 text-sm">
@@ -213,29 +213,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Service */}
-      {featuredService && (
-        <section className="py-20 bg-secondary-50">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-secondary-900 mb-4">
-                الخدمة المميزة
-              </h2>
-              <div className="section-divider" />
-              <p className="text-secondary-600 max-w-2xl mx-auto">
-                خدمة مميزة نقدمها بأعلى مستوى من الجودة والاحترافية
-              </p>
-            </div>
-            
-            <div className="max-w-md mx-auto">
-              <FeaturedServiceCard service={featuredService} />
-            </div>
-          </div>
-        </section>
-      )}
 
-      {/* Services Preview */}
-      <section className="py-20 bg-white">
+      {/* All Services */}
+      <section id="services" className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-secondary-900 mb-4">
@@ -248,7 +228,7 @@ export default function Home() {
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="responsive-grid">
               {Array.from({ length: 6 }).map((_, index) => (
                 <div key={index} className="flex justify-center">
                   <BarberLoader type="scissor" size="md" />
@@ -256,18 +236,10 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <ServiceGrid services={services} />
+            <div className="responsive-grid">
+              <ServiceGrid services={services} />
+            </div>
           )}
-
-          <div className="text-center mt-12">
-            <Link
-              href="/services"
-              className="btn-primary text-lg px-8 py-4 inline-flex items-center"
-            >
-              عرض جميع الخدمات
-              <ArrowLeft className="w-5 h-5 mr-2" />
-            </Link>
-          </div>
         </div>
       </section>
 
@@ -334,8 +306,9 @@ export default function Home() {
                 href={`tel:${config.contact.phone.value}`}
                 className="btn-gold text-lg px-8 py-4 inline-flex items-center justify-center"
               >
-                <Phone className="w-5 h-5 ml-2" />
                 {config.hero.ctaText}
+                <Phone className="w-5 h-5 mr-2" />
+
               </a>
               <Link
                 href="/contact"

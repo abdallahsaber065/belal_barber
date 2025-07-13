@@ -54,21 +54,21 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
       {/* Service Details */}
       <div className="flex flex-col space-y-3 mb-6">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
+          <div className="rtl-flex reverse">
             <Tag className="w-4 h-4 text-primary-500" />
             <span className="text-sm text-secondary-600">السعر</span>
           </div>
-          <span className="text-lg font-semibold text-primary-600">
+          <span className="text-lg font-semibold text-primary-600 number-ltr">
             {service.price}
           </span>
         </div>
         
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
+          <div className="rtl-flex reverse">
             <Clock className="w-4 h-4 text-primary-500" />
             <span className="text-sm text-secondary-600">المدة</span>
           </div>
-          <span className="text-sm text-secondary-700">
+          <span className="text-sm text-secondary-700 number-ltr">
             {service.duration}
           </span>
         </div>
@@ -81,20 +81,20 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleBookService}
-            className="btn-primary w-full flex items-center justify-center space-x-2"
+            className="btn-primary w-full flex items-center justify-center gap-2"
           >
-            <Phone className="w-4 h-4" />
             <span>{config.services.bookText}</span>
+            <Phone className="w-4 h-4" />
           </motion.button>
         )}
         
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="btn-outline w-full flex items-center justify-center space-x-2"
+          className="btn-outline w-full flex items-center justify-center gap-2"
         >
-          <ArrowLeft className="w-4 h-4" />
           <span>{config.services.ctaText}</span>
+          <ArrowLeft className="w-4 h-4" />
         </motion.button>
       </div>
 
@@ -160,21 +160,21 @@ export const FeaturedServiceCard: React.FC<ServiceCardProps> = ({
       {/* Service Details */}
       <div className="bg-secondary-50 rounded-lg p-4 mb-6">
         <div className="flex justify-between items-center mb-2">
-          <div className="flex items-center space-x-2">
+          <div className="rtl-flex reverse">
             <Tag className="w-5 h-5 text-primary-500" />
             <span className="font-medium text-secondary-700">السعر</span>
           </div>
-          <span className="text-xl font-bold text-primary-600">
+          <span className="text-xl font-bold text-primary-600 number-ltr">
             {service.price}
           </span>
         </div>
         
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-2">
+          <div className="rtl-flex reverse">
             <Clock className="w-5 h-5 text-primary-500" />
             <span className="font-medium text-secondary-700">المدة</span>
           </div>
-          <span className="text-secondary-700">
+          <span className="text-secondary-700 number-ltr">
             {service.duration}
           </span>
         </div>
@@ -185,10 +185,10 @@ export const FeaturedServiceCard: React.FC<ServiceCardProps> = ({
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         onClick={handleBookService}
-        className="btn-gold w-full flex items-center justify-center space-x-2 text-lg py-4"
+        className="btn-gold w-full flex items-center justify-center gap-2 text-lg py-4"
       >
-        <Phone className="w-5 h-5" />
         <span>{config.services.bookText}</span>
+        <Phone className="w-5 h-5" />
       </motion.button>
     </motion.div>
   )
@@ -215,10 +215,10 @@ export const CompactServiceCard: React.FC<ServiceCardProps> = ({
           {service.description}
         </p>
         <div className="flex items-center justify-between mt-1">
-          <span className="text-sm font-medium text-primary-600">
+          <span className="text-sm font-medium text-primary-600 number-ltr">
             {service.price}
           </span>
-          <span className="text-xs text-secondary-500">
+          <span className="text-xs text-secondary-500 number-ltr">
             {service.duration}
           </span>
         </div>

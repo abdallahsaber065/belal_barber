@@ -32,6 +32,40 @@
     @apply font-english;
     direction: ltr;
   }
+
+  /* Fix for numbers to always be LTR */
+  .number-ltr {
+    direction: ltr;
+    unicode-bidi: embed;
+  }
+
+  /* Fix for proper RTL spacing with icons */
+  .rtl-flex {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .rtl-flex.reverse {
+    flex-direction: row-reverse;
+  }
+
+  /* Responsive grid that handles different numbers of items */
+  .responsive-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .responsive-grid.stats {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+
+  @media (max-width: 640px) {
+    .responsive-grid.stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
 }
 
 @layer components {

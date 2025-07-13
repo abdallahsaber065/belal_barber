@@ -223,7 +223,7 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
                     required: 'رقم الهاتف مطلوب',
                     validate: (value) => validatePhone(value) || 'رقم الهاتف غير صحيح'
                   })}
-                  className="input-field"
+                  className="input-field number-ltr"
                   placeholder="+20 12 01234567"
                 />
                 {errors.phone && (
@@ -341,7 +341,7 @@ const ReservationForm: React.FC<ReservationFormProps> = ({
             className="btn-primary"
           >
             {isSubmitting ? (
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <BarberLoader type="scissor" size="sm" />
                 <span>جاري الحجز...</span>
               </div>
