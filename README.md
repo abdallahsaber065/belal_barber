@@ -1,201 +1,171 @@
-# مقص بلال – Barber & Spa
+# Belal Barber – Barber & Spa
 
-> موقع إلكتروني احترافي لصالون حلاقة وسبا رجالي في الإسكندرية
+> A professional website for a men’s barbershop and spa in Alexandria
 
-[![Next.js](https://img.shields.io/badge/Next.js-14+-black?style=flat-square&logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5+-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3+-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
-[![Supabase](https://img.shields.io/badge/Supabase-green?style=flat-square&logo=supabase)](https://supabase.com/)
+&#x20; &#x20;
 
-## 🌟 المميزات
+## 🌟 Features
 
-### 📱 تجربة مستخدم مميزة
+### 📱 User Experience
 
-- **تصميم متجاوب** - يعمل بسلاسة على جميع الأجهزة
-- **دعم اللغة العربية** - تصميم RTL كامل مع خطوط Cairo & Inter
-- **أنيميشن سلس** - باستخدام Framer Motion
-- **سرعة فائقة** - مُحسن للأداء والسرعة
+* **Responsive design** – Works smoothly across all devices
+* **Arabic support** – Full RTL layout with Cairo & Inter fonts
+* **Smooth animations** – Powered by Framer Motion
+* **Optimized performance** – Fast and lightweight
 
-### 🎨 تصميم احترافي
+### 🎨 Professional Design
 
-- **ألوان موضوعية** - درجات البرتقالي والذهبي للحلاقة
-- **أيكونات مخصصة** - رموز متعلقة بالحلاقة والسبا
-- **تأثيرات بصرية** - ظلال وتدرجات احترافية
-- **محمّلات مخصصة** - أنيميشن تحميل بثيم الحلاقة
+* **Themed colors** – Orange & gold palette for barbershop branding
+* **Custom icons** – Barber and spa related visuals
+* **Visual effects** – Shadows, gradients, and transitions
+* **Custom loaders** – Themed barber animations
 
-### 🔧 وظائف متقدمة
+### 🔧 Advanced Functionality
 
-- **إدارة الخدمات** - عرض وإدارة قائمة الخدمات
-- **نموذج تواصل** - مع التحقق والحفظ في قاعدة البيانات
-- **لوحة تحكم إدارية** - لإدارة الموقع والمحتوى
-- **تكامل Supabase** - قاعدة بيانات سحابية موثوقة
+* **Service management** – View and manage services list
+* **Contact form** – Validated and saved to database
+* **Admin dashboard** – Manage site and content
+* **Supabase integration** – Reliable cloud database
 
-## 🏗️ البنية التقنية
+## 🏗️ Tech Stack
 
-### التقنيات المستخدمة
+### Frontend
 
-#### Frontend
+* **Next.js 14+** – Modern React framework
+* **TypeScript** – Type-safe development
+* **Tailwind CSS** – Utility-first styling
+* **Framer Motion** – Animations
+* **React Hook Form** – Form handling
+* **React Hot Toast** – Notifications
 
-- **Next.js 14+** - إطار عمل React للتطبيقات الحديثة
-- **TypeScript** - للكتابة الآمنة والخالية من الأخطاء
-- **Tailwind CSS** - لتصميم سريع ومرن
-- **Framer Motion** - للأنيميشن والحركات السلسة
-- **React Hook Form** - لإدارة النماذج
-- **React Hot Toast** - للإشعارات
+### Backend & Database
 
-#### Backend & Database
+* **Supabase** – PostgreSQL with auto API
+* **Supabase Auth** – Authentication system
+* **Row Level Security** – Data security
 
-- **Supabase** - قاعدة بيانات PostgreSQL مع API جاهز
-- **Supabase Auth** - نظام المصادقة
-- **Row Level Security** - الأمان على مستوى الصفوف
+### Tools & Services
 
-#### Tools & Services
+* **Lucide React** – Icon library
+* **clsx & tailwind-merge** – CSS class utilities
+* **PostCSS & Autoprefixer** – CSS processing
 
-- **Lucide React** - مكتبة الأيقونات
-- **clsx & tailwind-merge** - لدمج الـ CSS classes
-- **PostCSS & Autoprefixer** - لمعالجة CSS
-
-## 📁 هيكل المشروع
+## 📁 Project Structure
 
 ```bash
 belal_barber/
-├── components/          # المكونات القابلة لإعادة الاستخدام
-│   ├── Header.tsx      # رأس الصفحة
-│   ├── Footer.tsx      # تذييل الصفحة
-│   ├── LoaderBarber.tsx # محمّلات مخصصة
-│   └── ServiceCard.tsx  # بطاقة الخدمة
-├── pages/              # صفحات الموقع
-│   ├── index.tsx       # الصفحة الرئيسية
-│   ├── services.tsx    # صفحة الخدمات
-│   ├── contact.tsx     # صفحة التواصل
-│   ├── admin-xyz123.tsx # لوحة التحكم الإدارية
-│   ├── _app.tsx        # تطبيق Next.js الرئيسي
-│   ├── _document.tsx   # هيكل HTML الأساسي
-│   └── api/            # API Routes
-│       ├── services.ts # إدارة الخدمات
-│       └── contacts.ts # إدارة الرسائل
-├── lib/                # المكتبات والوظائف المساعدة
-│   ├── supabaseClient.ts # عميل Supabase
-│   └── utils.ts        # وظائف مساعدة
-├── styles/             # ملفات التصميم
-│   └── globals.css     # التصميم العام
-├── config.json         # إعدادات المحتوى
-└── README.md          # هذا الملف
+├── components/          # Reusable components
+│   ├── Header.tsx      # Header
+│   ├── Footer.tsx      # Footer
+│   ├── LoaderBarber.tsx # Custom loaders
+│   └── ServiceCard.tsx  # Service card
+├── pages/              # Site pages
+│   ├── index.tsx       # Home
+│   ├── services.tsx    # Services
+│   ├── contact.tsx     # Contact
+│   ├── admin-xyz123.tsx # Admin dashboard
+│   ├── _app.tsx        # Next.js app entry
+│   ├── _document.tsx   # Base HTML
+│   └── api/            # API routes
+│       ├── services.ts # Services API
+│       └── contacts.ts # Contacts API
+├── lib/                # Utilities
+│   ├── supabaseClient.ts # Supabase client
+│   └── utils.ts        # Helper functions
+├── styles/             # Styling
+│   └── globals.css     # Global styles
+├── config.json         # Content settings
+└── README.md
 ```
 
-## 🚀 البدء السريع
+## 🚀 Quick Start
 
-### 1. استنساخ المشروع
+### 1. Clone the project
 
 ```bash
 git clone <repository-url>
 cd belal_barber
 ```
 
-### 2. تثبيت المتطلبات
+### 2. Install dependencies
 
 ```bash
 npm install
-# أو
+# or
 yarn install
 ```
 
-### 3. إعداد متغيرات البيئة
+### 3. Setup environment variables
 
 ```bash
 cp .env.local.example .env.local
 ```
 
-قم بتحديث `.env.local` بمعلومات Supabase الخاصة بك:
+Update `.env.local` with your Supabase credentials:
 
 ```env
-# Supabase Configuration
 NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-
-# Admin Configuration
 ADMIN_SECRET_ROUTE=admin-xyz123
-
-# Site Configuration
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
-### 4. إعداد قاعدة البيانات
+### 4. Setup database
 
-قم بتشغيل SQL commands الموجودة في `lib/supabaseClient.ts` في Supabase SQL Editor:
+Run the SQL commands from `lib/supabaseClient.ts` in the Supabase SQL editor.
 
-```sql
--- إنشاء الجداول وإعدادات الأمان
--- موجود في ملف lib/supabaseClient.ts
-```
-
-### 5. تشغيل المشروع
+### 5. Run the project
 
 ```bash
 npm run dev
-# أو
+# or
 yarn dev
 ```
 
-افتح [http://localhost:3000](http://localhost:3000) في المتصفح.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## 📊 قاعدة البيانات
+## 📊 Database Schema
 
-### جداول قاعدة البيانات
+### Services
 
-#### Services (الخدمات)
+* `id` – UUID (Primary Key)
+* `title`, `description`, `price`, `duration`, `icon`
+* `is_active`
+* `created_at`, `updated_at`
 
-- `id` - UUID (Primary Key)
-- `title` - نص الخدمة
-- `description` - وصف الخدمة
-- `price` - السعر
-- `duration` - المدة الزمنية
-- `icon` - الأيقونة (emoji)
-- `is_active` - حالة النشاط
-- `created_at`, `updated_at` - أوقات الإنشاء والتحديث
+### Contacts
 
-#### Contacts (الرسائل)
+* `id`, `name`, `email`, `phone`, `message`
+* `created_at`
 
-- `id` - UUID (Primary Key)
-- `name` - اسم المرسل
-- `email` - البريد الإلكتروني (اختياري)
-- `phone` - رقم الهاتف
-- `message` - نص الرسالة
-- `created_at` - وقت الإرسال
+### Reservations
 
-#### Reservations (الحجوزات)
+* `id`, `name`, `phone`, `email`
+* `service_id`, `appointment_date`, `appointment_time`
+* `status` (pending, confirmed, cancelled)
+* `created_at`, `updated_at`
 
-- `id` - UUID (Primary Key)
-- `name` - اسم العميل
-- `phone` - رقم الهاتف
-- `email` - البريد الإلكتروني (اختياري)
-- `service_id` - معرف الخدمة
-- `appointment_date` - تاريخ الموعد
-- `appointment_time` - وقت الموعد
-- `status` - حالة الحجز (pending, confirmed, cancelled)
-- `created_at`, `updated_at` - أوقات الإنشاء والتحديث
+## 🎨 Customization
 
-## 🎨 التخصيص
+### Content
 
-### تخصيص المحتوى
-
-كل محتوى الموقع قابل للتخصيص من خلال ملف `config.json`:
+Editable via `config.json`:
 
 ```json
 {
   "site": {
-    "name": "مقص بلال – Barber & Spa",
-    "tagline": "استمتع بخدمة حلاقه و سبا رجالى مميزه صحيه 100٪"
+    "name": "Belal Barber – Barber & Spa",
+    "tagline": "Enjoy a premium and healthy grooming experience"
   },
   "services": {
     "items": [
       {
         "id": "haircut",
-        "title": "حلاقة احترافية",
-        "description": "حلاقة عصرية بأحدث الأساليب",
-        "price": "ابتداءً من 50 جنيه",
-        "duration": "30 دقيقة",
+        "title": "Professional Haircut",
+        "description": "Modern styles with expert precision",
+        "price": "From 50 EGP",
+        "duration": "30 min",
         "icon": "✂️"
       }
     ]
@@ -203,161 +173,56 @@ yarn dev
 }
 ```
 
-### تخصيص التصميم
+### Styling
 
-#### الألوان
+* Colors configured in `tailwind.config.js`
+* Fonts imported in `globals.css` (Cairo & Inter)
 
-```javascript
-// tailwind.config.js
-colors: {
-  primary: { /* درجات البرتقالي */ },
-  secondary: { /* درجات الرمادي */ },
-  gold: { /* درجات الذهبي */ }
-}
-```
+## 🔐 Admin Dashboard
 
-#### الخطوط
+### Access
 
-```css
-/* globals.css */
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-```
+* Route: `/admin-xyz123` (customizable via env vars)
+* Default login:
 
-## 🔐 لوحة التحكم الإدارية
+  * Email: `admin@belalbarber.com`
+  * Password: `admin123`
 
-### الوصول
+### Features
 
-- الرابط: `/admin-xyz123` (يمكن تغييره من متغيرات البيئة)
-- بيانات الدخول الافتراضية:
-  - البريد الإلكتروني: `admin@belalbarber.com`
-  - كلمة المرور: `admin123`
+* Dashboard overview
+* Service management
+* Contact management
+* Reservation management
+* System settings
 
-### المميزات
+## 📱 Pages
 
-- **لوحة المعلومات** - إحصائيات سريعة
-- **إدارة الخدمات** - إضافة، تعديل، حذف الخدمات
-- **إدارة الرسائل** - عرض رسائل العملاء
-- **إدارة الحجوزات** - تأكيد أو إلغاء الحجوزات
-- **الإعدادات** - عرض إعدادات النظام
+* **Home** (`/`) – Hero, services preview, testimonials
+* **Services** (`/services`) – List of services
+* **Contact** (`/contact`) – Contact info, form, FAQ, map
+* **Admin** (`/admin-xyz123`) – Admin dashboard
 
-## 📱 الصفحات
+## 🚀 Deployment
 
-### 🏠 الصفحة الرئيسية (`/`)
+### Netlify
 
-- بانر ترحيبي مع CTA
-- إحصائيات المشروع
-- معاينة الخدمات المميزة
-- آراء العملاء
-- دعوة للعمل النهائية
+* Build command: `npm run build`
+* Publish directory: `out`
+* Add env vars in Netlify dashboard
 
-### 📞 صفحة التواصل (`/contact`)
-
-- معلومات التواصل
-- نموذج اتصال متقدم
-- خريطة (placeholder)
-- أسئلة شائعة
-- أزرار اتصال سريع
-
-## 🚀 النشر
-
-### نشر على Netlify
-
-1. **دفع الكود إلى Git Repository**
-
-    ```bash
-    git add .
-    git commit -m "Initial commit"
-    git push origin main
-    ```
-
-2. **ربط Netlify بالـ Repository**
-
-   - اذهب إلى [netlify.com](https://netlify.com)
-   - اختر "New site from Git"
-   - اختر repository الخاص بك
-
-3. **إعدادات البناء**
-
-    ```bash
-    Build command: npm run build
-    Publish directory: out
-    ```
-
-4. **إضافة متغيرات البيئة**
-
-   - في Netlify Dashboard > Site settings > Environment variables
-   - أضف جميع المتغيرات من `.env.local`
-
-### نشر على Vercel
+### Vercel
 
 ```bash
 npx vercel
 ```
 
-ثم اتبع التعليمات وأضف متغيرات البيئة.
+Follow the setup and add environment variables.
 
-## 🔒 الأمان
+## 🔒 Security
 
-### إعدادات Supabase
+* Supabase Row Level Security enabled
+* Auth required for admin routes
+* API keys stored in env vars
+* Data validation & sanitization
 
-- **Row Level Security** مفعل على جميع الجداول
-- **المصادقة مطلوبة** للوصول لبيانات الإدارة
-- **API Keys محمية** بمتغيرات البيئة
-
-### أفضل الممارسات
-
-- جميع API endpoints محمية بالتحقق
-- تشفير كلمات المرور
-- تحقق من صحة البيانات
-- حماية من XSS و SQL Injection
-
-## 🐛 استكشاف الأخطاء
-
-### مشاكل شائعة
-
-#### خطأ في الاتصال بـ Supabase
-
-```bash
-Error: Invalid API key
-```
-
-**الحل:** تأكد من صحة المتغيرات في `.env.local`
-
-#### خطأ في التصريحات
-
-```bash
-Error: Failed to load services
-```
-
-**الحل:** تأكد من تشغيل SQL setup في Supabase
-
-#### مشكلة في الخطوط
-
-```bash
-Error loading Google Fonts
-```
-
-**الحل:** تحقق من الاتصال بالإنترنت أو استخدم خطوط محلية
-
-## 📧 الدعم والتواصل
-
-للدعم التقني أو الاستفسارات:
-
-- **البريد الإلكتروني:** <info@belalbarber.com>
-- **الهاتف:** +20 12 01353503
-- **الموقع:** محافظة الإسكندرية - العامرية
-
-## 📄 الترخيص
-
-هذا المشروع مرخص تحت [MIT License](LICENSE).
-
-## 🤝 المساهمة
-
-المساهمات مرحب بها! يرجى:
-
-1. Fork المشروع
-2. إنشاء branch للميزة الجديدة
-3. Commit التغييرات
-4. Push إلى البرانش
-5. فتح Pull Request
